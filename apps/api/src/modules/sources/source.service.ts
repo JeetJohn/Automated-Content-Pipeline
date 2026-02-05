@@ -1,4 +1,4 @@
-import { Source, CreateSourceInput, ProcessingStatus, SourceType } from '@contentpipe/types';
+import { Source, ProcessingStatus, SourceType } from '@contentpipe/types';
 import { prisma } from '../../infrastructure/database/prisma';
 import { NotFoundError } from '../../shared/errors/error-handler';
 import { ProjectService } from '../projects/project.service';
@@ -28,18 +28,18 @@ export class SourceService {
 
     // TODO: Implement file upload to MinIO
     // TODO: Extract text from file based on type
-    
+
     const source = await prisma.source.create({
       data: {
         projectId,
-        sourceType: this.detectFileType(filename),
+        sourceType: this.detectFileType(filename) as any,
         originalPath: filename,
         extractedText: '', // Will be populated by extraction service
         metadata: {
           fileType: filename.split('.').pop(),
           fileSize: buffer.length,
         },
-        processingStatus: ProcessingStatus.PENDING,
+        processingStatus: 'PENDING' as any,
       },
     });
 
@@ -54,11 +54,11 @@ export class SourceService {
     const source = await prisma.source.create({
       data: {
         projectId,
-        sourceType: SourceType.URL,
+        sourceType: 'URL' as any,
         originalPath: url,
         extractedText: '',
         metadata: { url },
-        processingStatus: ProcessingStatus.PENDING,
+        processingStatus: 'PENDING' as any,
       },
     });
 
@@ -73,11 +73,11 @@ export class SourceService {
     const source = await prisma.source.create({
       data: {
         projectId,
-        sourceType: SourceType.NOTE,
+        sourceType: 'NOTE' as any,
         originalPath: 'note',
         extractedText: note,
         metadata: {},
-        processingStatus: ProcessingStatus.COMPLETED,
+        processingStatus: 'COMPLETED' as any,
       },
     });
 

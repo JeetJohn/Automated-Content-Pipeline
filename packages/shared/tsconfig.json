@@ -4,12 +4,12 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": ".",
+    "jsx": "react-jsx",
+    "composite": true,
     "paths": {
       "@/*": ["src/*"]
-    },
-    "strict": false,
-    "noImplicitAny": false,
-    "strictNullChecks": false
+    }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "../../*/node_modules"]
 }

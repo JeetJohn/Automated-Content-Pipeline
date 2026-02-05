@@ -1,15 +1,15 @@
 export enum SourceType {
-  FILE = 'file',
-  URL = 'url',
-  NOTE = 'note',
-  TRANSCRIPT = 'transcript',
+  FILE = 'FILE',
+  URL = 'URL',
+  NOTE = 'NOTE',
+  TRANSCRIPT = 'TRANSCRIPT',
 }
 
 export enum ProcessingStatus {
-  PENDING = 'pending',
-  PROCESSING = 'processing',
-  COMPLETED = 'completed',
-  FAILED = 'failed',
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
 }
 
 export interface SourceMetadata {

@@ -25,6 +25,7 @@
     "@fastify/swagger": "^8.13.0",
     "@fastify/swagger-ui": "^2.0.0",
     "@fastify/websocket": "^8.2.0",
+    "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^5.8.0",
     "bullmq": "^5.0.0",
     "dotenv": "^17.2.3",

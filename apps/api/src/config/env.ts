@@ -11,7 +11,10 @@ const envSchema = z.object({
 
   MINIO_ENDPOINT: z.string().default('localhost'),
   MINIO_PORT: z.string().default('9000').transform(Number),
-  MINIO_USE_SSL: z.string().default('false').transform(v => v === 'true'),
+  MINIO_USE_SSL: z
+    .string()
+    .default('false')
+    .transform((v) => v === 'true'),
   MINIO_ACCESS_KEY: z.string(),
   MINIO_SECRET_KEY: z.string(),
   MINIO_BUCKET: z.string().default('contentpipe-uploads'),
@@ -23,6 +26,7 @@ const envSchema = z.object({
   ENCRYPTION_KEY: z.string(),
 
   OPENAI_API_KEY: z.string().optional(),
+  GEMINI_API_KEY: z.string().optional(),
   ANTHROPIC_API_KEY: z.string().optional(),
   PINECONE_API_KEY: z.string().optional(),
   PINECONE_ENVIRONMENT: z.string().optional(),

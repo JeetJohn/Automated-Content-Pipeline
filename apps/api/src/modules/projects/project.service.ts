@@ -3,11 +3,45 @@ import {
   CreateProjectInput,
   UpdateProjectInput,
   ProjectStatus,
+  ContentType,
+  TonePreference,
 } from '@contentpipe/types';
 import { prisma } from '../../infrastructure/database/prisma';
 import { NotFoundError } from '../../shared/errors/error-handler';
 
 export class ProjectService {
+  private toContentTypeEnum(value: string): string {
+    const mapping: Record<string, string> = {
+      blog: 'BLOG',
+      article: 'ARTICLE',
+      report: 'REPORT',
+      summary: 'SUMMARY',
+    };
+    return mapping[value.toLowerCase()] || value;
+  }
+
+  private toTonePreferenceEnum(value: string): string {
+    const mapping: Record<string, string> = {
+      formal: 'FORMAL',
+      casual: 'CASUAL',
+      technical: 'TECHNICAL',
+      persuasive: 'PERSUASIVE',
+    };
+    return mapping[value.toLowerCase()] || value;
+  }
+
+  private toProjectStatusEnum(value: string): string {
+    const mapping: Record<string, string> = {
+      draft: 'DRAFT',
+      distilling: 'DISTILLING',
+      generating: 'GENERATING',
+      refining: 'REFINING',
+      completed: 'COMPLETED',
+      archived: 'ARCHIVED',
+    };
+    return mapping[value.toLowerCase()] || value;
+  }
+
   async list(userId: string): Promise<Project[]> {
     const projects = await prisma.project.findMany({
       where: { userId },
@@ -33,10 +67,10 @@ export class ProjectService {
       data: {
         userId,
         title: input.title,
-        contentType: input.contentType,
-        tonePreference: input.tonePreference,
+        contentType: this.toContentTypeEnum(input.contentType as string) as any,
+        tonePreference: this.toTonePreferenceEnum(input.tonePreference as string) as any,
         targetLength: input.targetLength,
-        status: ProjectStatus.DRAFT,
+        status: 'DRAFT' as any,
         versionCount: 0,
       },
     });
@@ -44,23 +78,24 @@ export class ProjectService {
     return this.mapToDomain(project);
   }
 
-  async update(
-    id: string,
-    userId: string,
-    input: UpdateProjectInput
-  ): Promise<Project> {
+  async update(id: string, userId: string, input: UpdateProjectInput): Promise<Project> {
     await this.getById(id, userId);
+
+    const updateData: any = {
+      updatedAt: new Date(),
+    };
+
+    if (input.title) updateData.title = input.title;
+    if (input.contentType)
+      updateData.contentType = this.toContentTypeEnum(input.contentType as string) as any;
+    if (input.tonePreference)
+      updateData.tonePreference = this.toTonePreferenceEnum(input.tonePreference as string) as any;
+    if (input.targetLength) updateData.targetLength = input.targetLength;
+    if (input.status) updateData.status = this.toProjectStatusEnum(input.status) as any;
 
     const project = await prisma.project.update({
       where: { id },
-      data: {
-        ...(input.title && { title: input.title }),
-        ...(input.contentType && { contentType: input.contentType }),
-        ...(input.tonePreference && { tonePreference: input.tonePreference }),
-        ...(input.targetLength && { targetLength: input.targetLength }),
-        ...(input.status && { status: input.status }),
-        updatedAt: new Date(),
-      },
+      data: updateData,
     });
 
     return this.mapToDomain(project);
@@ -77,8 +112,8 @@ export class ProjectService {
       userId: project.userId,
       title: project.title,
       status: project.status as ProjectStatus,
-      contentType: project.contentType,
-      tonePreference: project.tonePreference,
+      contentType: project.contentType as ContentType,
+      tonePreference: project.tonePreference as TonePreference,
       targetLength: project.targetLength,
       createdAt: project.createdAt,
       updatedAt: project.updatedAt,

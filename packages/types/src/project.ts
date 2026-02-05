@@ -1,24 +1,24 @@
 export enum ProjectStatus {
-  DRAFT = 'draft',
-  DISTILLING = 'distilling',
-  GENERATING = 'generating',
-  REFINING = 'refining',
-  COMPLETED = 'completed',
-  ARCHIVED = 'archived',
+  DRAFT = 'DRAFT',
+  DISTILLING = 'DISTILLING',
+  GENERATING = 'GENERATING',
+  REFINING = 'REFINING',
+  COMPLETED = 'COMPLETED',
+  ARCHIVED = 'ARCHIVED',
 }
 
 export enum ContentType {
-  BLOG = 'blog',
-  ARTICLE = 'article',
-  REPORT = 'report',
-  SUMMARY = 'summary',
+  BLOG = 'BLOG',
+  ARTICLE = 'ARTICLE',
+  REPORT = 'REPORT',
+  SUMMARY = 'SUMMARY',
 }
 
 export enum TonePreference {
-  FORMAL = 'formal',
-  CASUAL = 'casual',
-  TECHNICAL = 'technical',
-  PERSUASIVE = 'persuasive',
+  FORMAL = 'FORMAL',
+  CASUAL = 'CASUAL',
+  TECHNICAL = 'TECHNICAL',
+  PERSUASIVE = 'PERSUASIVE',
 }
 
 export interface Project {

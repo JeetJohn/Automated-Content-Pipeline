@@ -7,12 +7,13 @@ interface ProjectState {
   currentProject: Project | null;
   isLoading: boolean;
   error: string | null;
-  
+
   fetchProjects: () => Promise<void>;
   fetchProject: (id: string) => Promise<void>;
-  createProject: (data: CreateProjectData) => Promise<void>;
+  createProject: (data: CreateProjectData) => Promise<Project>;
   updateProject: (id: string, data: UpdateProjectData) => Promise<void>;
   deleteProject: (id: string) => Promise<void>;
+  clearError: () => void;
 }
 
 interface CreateProjectData {
@@ -38,7 +39,9 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       const projects = await api.get<Project[]>('/projects');
       set({ projects, isLoading: false });
     } catch (err) {
-      set({ error: (err as Error).message, isLoading: false });
+      const errorMsg = (err as Error).message || 'Failed to fetch projects';
+      set({ error: errorMsg, isLoading: false });
+      throw err;
     }
   },
 
@@ -48,7 +51,9 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       const project = await api.get<Project>(`/projects/${id}`);
       set({ currentProject: project, isLoading: false });
     } catch (err) {
-      set({ error: (err as Error).message, isLoading: false });
+      const errorMsg = (err as Error).message || 'Failed to fetch project';
+      set({ error: errorMsg, isLoading: false });
+      throw err;
     }
   },
 
@@ -56,12 +61,15 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const project = await api.post<Project>('/projects', data);
-      set({ 
-        projects: [...get().projects, project], 
-        isLoading: false 
+      set({
+        projects: [...get().projects, project],
+        isLoading: false,
       });
+      return project;
     } catch (err) {
-      set({ error: (err as Error).message, isLoading: false });
+      const errorMsg = (err as Error).message || 'Failed to create project';
+      set({ error: errorMsg, isLoading: false });
+      throw err;
     }
   },
 
@@ -70,12 +78,14 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     try {
       const project = await api.put<Project>(`/projects/${id}`, data);
       set({
-        projects: get().projects.map(p => p.id === id ? project : p),
+        projects: get().projects.map((p) => (p.id === id ? project : p)),
         currentProject: project,
         isLoading: false,
       });
     } catch (err) {
-      set({ error: (err as Error).message, isLoading: false });
+      const errorMsg = (err as Error).message || 'Failed to update project';
+      set({ error: errorMsg, isLoading: false });
+      throw err;
     }
   },
 
@@ -84,11 +94,15 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     try {
       await api.delete(`/projects/${id}`);
       set({
-        projects: get().projects.filter(p => p.id !== id),
+        projects: get().projects.filter((p) => p.id !== id),
         isLoading: false,
       });
     } catch (err) {
-      set({ error: (err as Error).message, isLoading: false });
+      const errorMsg = (err as Error).message || 'Failed to delete project';
+      set({ error: errorMsg, isLoading: false });
+      throw err;
     }
   },
+
+  clearError: () => set({ error: null }),
 }));

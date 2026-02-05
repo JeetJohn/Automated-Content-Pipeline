@@ -10,13 +10,9 @@ interface ApiResponse<T> {
 }
 
 class ApiClient {
-  private async request<T>(
-    method: string,
-    endpoint: string,
-    body?: unknown
-  ): Promise<T> {
+  private async request<T>(method: string, endpoint: string, body?: unknown): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
-    
+
     const options: RequestInit = {
       method,
       headers: {
@@ -30,10 +26,15 @@ class ApiClient {
     }
 
     const response = await fetch(url, options);
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.error?.message || 'API request failed');
+    }
+
+    // Handle 204 No Content responses (e.g., for DELETE requests)
+    if (response.status === 204) {
+      return undefined as T;
     }
 
     const result: ApiResponse<T> = await response.json();

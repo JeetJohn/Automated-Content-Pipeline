@@ -1,8 +1,15 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PlusCircle, FileText, Settings } from 'lucide-react';
+import { CreateProjectDialog } from '@/components/create-project-dialog';
 
 export default function HomePage() {
+  const showComingSoon = () => {
+    alert('Coming soon!');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Header */}
@@ -15,9 +22,15 @@ export default function HomePage() {
             <span className="font-semibold text-lg">ContentPipe</span>
           </div>
           <nav className="flex items-center gap-4">
-            <Button variant="ghost" size="sm">Docs</Button>
-            <Button variant="ghost" size="sm">Settings</Button>
-            <Button size="sm">Sign In</Button>
+            <Button variant="ghost" size="sm" onClick={showComingSoon}>
+              Docs
+            </Button>
+            <Button variant="ghost" size="sm" onClick={showComingSoon}>
+              Settings
+            </Button>
+            <Button size="sm" onClick={showComingSoon}>
+              Sign In
+            </Button>
           </nav>
         </div>
       </header>
@@ -30,15 +43,17 @@ export default function HomePage() {
             <span className="text-blue-600"> Publishable Content</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Upload your research materials, let AI distill the key insights, 
-            and generate publication-ready drafts in minutes.
+            Upload your research materials, let AI distill the key insights, and generate
+            publication-ready drafts in minutes.
           </p>
           <div className="flex items-center justify-center gap-4">
-            <Button size="lg" className="gap-2">
-              <PlusCircle className="w-5 h-5" />
-              Create New Project
-            </Button>
-            <Button size="lg" variant="outline">
+            <CreateProjectDialog>
+              <Button size="lg" className="gap-2">
+                <PlusCircle className="w-5 h-5" />
+                Create New Project
+              </Button>
+            </CreateProjectDialog>
+            <Button size="lg" variant="outline" onClick={showComingSoon}>
               View Demo
             </Button>
           </div>
@@ -68,7 +83,9 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold">Recent Projects</h2>
             <Link href="/projects">
-              <Button variant="ghost" size="sm">View All</Button>
+              <Button variant="ghost" size="sm">
+                View All
+              </Button>
             </Link>
           </div>
           <div className="bg-white rounded-lg border p-8 text-center text-gray-500">
@@ -80,7 +97,15 @@ export default function HomePage() {
   );
 }
 
-function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+function FeatureCard({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
   return (
     <div className="bg-white p-6 rounded-xl border shadow-sm hover:shadow-md transition-shadow">
       <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 mb-4">
