@@ -1,13 +1,53 @@
+# Dependencies
 node_modules
-.DS_Store
+.pnp
+.pnp.js
+
+# Build outputs
 dist
+build
 .next
 out
-*.log
+.turbo
+*.tsbuildinfo
+
+# Environment files
 .env
 .env.local
 .env.*.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+*.log
+logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Testing
 coverage
+.nyc_output
+
+# IDEs and editors
 .vscode
 .idea
-*.tsbuildinfo
+*.swp
+*.swo
+*~
+.DS_Store
+*.pem
+
+# Prisma
+prisma/migrations/migration_lock.toml
+
+# Misc
+*.local
+.vercel
+.netlify
+
+# Documentation (internal)
+docs/TODO.md

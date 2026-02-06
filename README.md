@@ -93,7 +93,6 @@ contentpipe/
 - [Product Requirements (docs/PRD.md)](./docs/PRD.md)
 - [Design Document (docs/DESIGN.md)](./docs/DESIGN.md)
 - [Technical Rules (docs/TECH-RULES.md)](./docs/TECH-RULES.md)
-- [Development TODO (docs/TODO.md)](./docs/TODO.md)
 
 ## License
 
